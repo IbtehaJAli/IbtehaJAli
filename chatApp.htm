@@ -1,0 +1,237 @@
+<!doctype html>
+    <html>
+        <head>
+             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+             <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+            <style>
+                #mainContainer{
+                    position: relative;
+                }
+                #header{
+                    width: 100%;
+                    background-color: white;
+                    height:10vh;
+                    position: absolute;
+                }
+                #searchBarContainer{
+                    background-color: white;
+                    width:40%;
+                    height: 5vh;
+                    inset:0;
+                    margin: auto;
+                    margin-top: 1.1%;
+                    display: flex;
+                    flex-direction: row;
+                }
+                #searchBar{
+                    width:100%;
+                    height:97%;
+                    background-color:white;
+                    outline:none;
+                    border: none;
+                    border-bottom: 1px solid black;
+                    font-size: medium;
+                    padding: 0;
+                    cursor: pointer;
+                    z-index: 1;
+                }
+                #searchIcon{
+                    font-size: xx-large;
+                    color: black;
+                    cursor: pointer;
+                }
+                #secondContainer{
+                    display: flex;
+                    flex-direction: row;
+                    position: absolute;
+                    width: 100%;
+                    height:88vh;
+                    margin-top: 10vh;
+                }
+                #leftContainer{
+                    width:20%;
+                    background-color: grey;
+                    height:88vh;
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                }
+                #user1,#user2{
+                    width:100%;
+                    height:10vh;
+                    outline: 1px dashed white;
+                }
+                #rightContainer{
+                    width:80%;
+                    background-color: grey;
+                    height:88vh;
+                    position: absolute;
+                    right: 0;
+                    display: flex;
+                    flex-direction: column;
+                    
+                }
+                #chatArea{
+                    background-color: #ebebeb;
+                    width: 100%;
+                    height:78vh;
+                }
+                #textContainer{
+                    background-color: white;
+                    width: 100%;
+                    height:10vh;
+                }
+                #textField{
+                    background-color: white;
+                    width: 80%;
+                    height:7vh;
+                    inset:0;
+                    margin:auto;
+                    margin-top:0.9%;
+                    display: flex;
+                    flex-direction: row;
+                    
+                }
+                #writeText{
+                    width:80%;
+                    height:6vh;
+                    background-color:white;
+                    outline:none;
+                    border: none;
+                    border-bottom: 1px solid black;
+                    margin-left: 2%;
+                    font-size: medium;
+                    padding: 0;
+                }
+                #send{
+                     width:20%;
+                    height:7vh;
+                    background-color:white;
+                    outline:none;
+                    border:none;
+                }
+                #sendButton{
+                    inset:0;
+                    margin: auto;
+                    background-color: grey;
+                    width: 50%;
+                    height:60%;
+                    margin-top: 3%;
+                    text-align: center;
+                    align-items: center;
+                    align-content: center;
+                    padding: 2%;
+                    cursor: pointer;
+                    font-size:  x-large;
+                    margin-right: 2%;
+                }
+                .material-icons{
+                    font-size: xx-large;
+                    color: white;
+                }
+            </style>
+            <script>
+                window.onload=function (){
+     const firebaseConfig = {
+    apiKey: "AIzaSyBHD2EucpDwMz249Dyz0Us_5_TXbqq_FSI",
+    authDomain: "chatapp-e5954.firebaseapp.com",
+    projectId: "chatapp-e5954",
+    storageBucket: "chatapp-e5954.appspot.com",
+    messagingSenderId: "423983959503",
+    appId: "1:423983959503:web:380cd5b5ecd8a3027216ba",
+    measurementId: "G-SGWW8MV296"
+  };
+   firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    checkNewMessages();
+};
+function checkNewMessages(){
+    
+}
+function search(){
+    
+     
+}
+var re; var text; var inter; 
+  function sendChat(){
+    var date= new Date().toString();
+    re=document.getElementById("searchBar").value.toUpperCase();
+    text=document.getElementById("writeText").value;
+   var a= firebase.database().ref().child(re).orderByKey().limitToLast(1);
+    a.on("value",function(snapshot){
+        inter=JSON.stringify(snapshot.val());
+        //var a3=a2[1].replace(/["']/g, "");
+  });
+    if(inter=="undefined"){
+      alert("here");
+      var b= firebase.database().ref().child(re).orderByKey().limitToLast(1);
+    b.on("value",function(snapshot){
+        inter=JSON.stringify(snapshot.val());
+        //var a3=a2[1].replace(/["']/g, "");
+  });
+    }
+    if(inter=="null"){
+      alert(inter);
+      var code="18-SE-13-m-0";
+      //var db=firebase.database().ref().child(re).update({
+        //[code]:text
+        //});
+      var db2=firebase.database().ref().child(re).child(code).update({
+        msg:text,
+        DandT:date,
+        Status:"U"
+        });
+    }
+    else {
+      alert(inter);
+      var b=inter.split(":");
+      var c=b[0].replace(/["']/g, "");
+      var d=c.replace("{","");
+      /*var d=c.split("-");
+      var e=d[4].length;*/
+      var e1="0";
+     // var f=firebase.database().ref().child(re).update({
+      //[d+e1]:text
+      //});
+       var g=firebase.database().ref().child(re).child(d+e1).update({
+        msg:text,
+        DandT:date,
+        Status:"U"
+    });
+  }
+  }
+  
+            </script>
+        </head
+        <body>
+            <div id=mainContainer>
+             <div id=header>
+                <div id=searchBarContainer>
+                    <input id=searchBar type="text" placeholder="Enter User Name"><i id=searchIcon class="material-icons" onclick="search()">search</i></input>
+                </div>
+             </div>
+             <div id=secondContainer>
+             <div id=leftContainer>
+                <div id=user1></div>
+                <div id=user2></div>
+             </div>
+             <div id=rightContainer>
+                <div id=chatArea></div>
+                <div id=textContainer>
+                    <div id=textField>
+                        <input id=writeText type="text" placeholder="Write Message"></input>
+                        <div id=send>
+                            <div id=sendButton onclick="sendChat()"><i class="material-icons">chevron_right</i></div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             </div>
+            </div>
+        </body>
+    </html>
